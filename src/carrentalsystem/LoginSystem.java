@@ -1,60 +1,52 @@
 package carrentalsystem;
+/*
+ * LoginSystem.java
+ * This program accepts username and password from the user.
+ * Password input is masked using asterisks (*).
+ * The user is given three attempts to login.
+ */
+
 import java.io.Console;
 import java.util.Scanner;
 
-/**
- * LoginSystem class
- * Handles username and password authentication
- * Allows a maximum of 3 login attempts
- */
 public class LoginSystem {
-
-    private static final String CORRECT_USERNAME = "admin";
-    private static final String CORRECT_PASSWORD = "password123";
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-        Console console = System.console();
+        // Correct login credentials
+        String correctUsername = "admin";
+        String correctPassword = "password123";
+
+        // Number of allowed login attempts
         int attempts = 3;
 
+        Scanner scanner = new Scanner(System.in);
+        Console console = System.console();
+
+        // Loop until attempts are exhausted
         while (attempts > 0) {
 
+            // Prompt user for username
             System.out.print("Enter Username: ");
             String username = scanner.nextLine();
 
-            String password;
+            // Prompt user for password (masked)
+            char[] passwordArray = console.readPassword("Enter Password: ");
+            String password = new String(passwordArray);
 
-            // Mask password input
-            if (console != null) {
-                char[] pwd = console.readPassword("Enter Password: ");
-                password = new String(pwd);
-            } else {
-                System.out.print("Enter Password: ");
-                password = scanner.nextLine();
-                System.out.println("******** (Password masked)");
-            }
-
-            if (username.equals(CORRECT_USERNAME) &&
-                password.equals(CORRECT_PASSWORD)) {
-
+            // Check credentials
+            if (username.equals(correctUsername) && password.equals(correctPassword)) {
                 System.out.println("\nLogin successful. Welcome!");
                 break;
-
             } else {
                 attempts--;
-                System.out.println("\nIncorrect username or password.");
-                System.out.println("Attempts remaining: " + attempts);
+                System.out.println("\nIncorrect credentials. Attempts left: " + attempts);
             }
 
+            // Exit after 3 failed attempts
             if (attempts == 0) {
-                System.out.println("\nAccess denied. Too many failed attempts.");
+                System.out.println("Access denied. Too many failed attempts.");
             }
-
-            System.out.println("----------------------------");
         }
-
-        scanner.close();
     }
 }
-
